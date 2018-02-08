@@ -1,4 +1,9 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
+import App from './App'
+import registerServiceWorker from './registerServiceWorker'
+import { Provider } from 'react-redux'
 
 const initialState = {
   id: 1,
@@ -42,30 +47,9 @@ const reducer = (state = initialState, action) => {
 
 const store = createStore(reducer)
 
-store.subscribe(() =>{
-  console.log(store.getState())
-})
-
-store.dispatch({
-  type: 'addMachine',
-  id: 3,
-  status: 'Inactive',
-  price: 20,
-  time: 50,
-})
-
-store.dispatch({
-  type: 'addMachine',
-  id: 2,
-  status: 'Inactive',
-  price: 20,
-  time: 50,
-})
-
-store.dispatch({
-  type: 'removeMachine',
-  id: 2,
-  status: 'Inactive',
-  price: 20,
-  time: 50,
-})
+ReactDOM.render(
+  <Provider>
+    <App/>
+  </Provider>,
+document.getElementById('root'))
+registerServiceWorker()
