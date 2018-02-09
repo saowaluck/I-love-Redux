@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import { Provider } from 'react-redux'
@@ -12,18 +12,18 @@ const initialState = {
   time: 50,
   machines:[]
 }
-const reducer = (state = initialState, action) => {
+const machineReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'addMachine':
       state = {
         ...state,
-        id: action.id,
-        status: action.status,
-        price: action.price,
-        time: action.time,
+        id: action.payload.id,
+        status: action.payload.status,
+        price: action.payload.price,
+        time: action.payload.time,
         machines: [
           ...state.machines,
-          action.id,
+          action.payload.id,
         ]
       }
       break
@@ -31,11 +31,11 @@ const reducer = (state = initialState, action) => {
     case 'removeMachine':
       state = {
         ...state,
-        id: action.id,
-        status: action.status,
-        price: action.price,
-        time: action.time,
-        machines: state.machines.filter((each) => each !== action.id)
+        id: action.payload.id,
+        status: action.payload.status,
+        price: action.payload.price,
+        time: action.payload.time,
+        machines: state.machines.filter((each) => each !== action.payload.id)
       }
       break
 
@@ -45,10 +45,10 @@ const reducer = (state = initialState, action) => {
   return state
 }
 
-const store = createStore(reducer)
+const store = createStore(combineReducers({machine:machineReducer}))
 
 ReactDOM.render(
-  <Provider>
+  <Provider store={store}>
     <App/>
   </Provider>,
 document.getElementById('root'))
